@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Management System</title>
+    <title>LMS Login Selection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,47 +12,91 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            text-align: center;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin-bottom: 1rem;
+        }
+        .login-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.75rem;
+        }
+        .login-button:hover {
+            opacity: 0.9;
+        }
+        .student-button {
+            background-color: #4299e1;
+            color: white;
+        }
+        .student-button:hover {
+            background-color: #2b6cb0;
+        }
+        .teacher-button {
+            background-color: #68d391;
+            color: #1a202c;
+        }
+        .teacher-button:hover {
+            background-color: #48bb78;
+        }
+          .admin-button {
+            background-color: #f56565;
+            color: white;
+        }
+        .admin-button:hover {
+            background-color: #c53030;
+        }
+
+        .description {
+            font-size: 0.875rem;
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .button-group {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .login-button {
+                margin-right: 0.75rem;
+                margin-bottom: 0;
+                flex: 1;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-100">
-    <header class="bg-blue-600 text-white py-4 flex justify-between items-center shadow-md sticky top-0 z-10 rounded-md">
-        <div class="logo text-xl font-bold ml-4">LMS</div>
-        <nav class="mr-4">
-            <ul class="flex space-x-4">
-                <li><a href="dashboard.html" class="hover:text-blue-200 no-underline">Dashboard</a></li>
-                <li><a href="assignments.html" class="hover:text-blue-200 no-underline">Assignments</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="home" class="bg-blue-100 text-gray-800 text-center py-20 px-4 rounded-md">
-        <h2 class="text-3xl font-semibold mb-4">Welcome to Our Learning Platform</h2>
-        <p class="text-lg mb-8">Navigate to your dashboard to view your courses or check your assignments.</p>
-        <div class="flex justify-center space-x-4">
-            <button onclick="window.location.href='dashboard.html'" class="bg-green-500 text-white py-3 px-6 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                Go to Dashboard
-            </button>
-            <button onclick="window.location.href='assignments.html'" class="bg-yellow-500 text-gray-800 py-3 px-6 rounded-full hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75">
-                View Assignments
-            </button>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container">
+        <h1 class="title">Welcome to the Learning Management System</h1>
+        <p class="description">Please select your role to proceed to the login page.</p>
+        <div class="button-group">
+            <button onclick="window.location.href='login.html'" class="login-button student-button">Student Login</button>
+            <button onclick="window.location.href='teacher_login.html'" class="login-button teacher-button">Teacher Login</button>
+            <button onclick="window.location.href='admin_login.html'" class="login-button admin-button">Admin Login</button>
         </div>
-    </section>
-
-    <footer class="bg-gray-800 text-white py-4 text-center rounded-md">
-        <p>© 2024 Learning Management System. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Smooth scrolling function
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+    </div>
 </body>
 </html>
