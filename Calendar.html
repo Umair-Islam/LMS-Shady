@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Calendar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .calendar {
+            width: 100%;
+            max-width: 600px; /* Increased max-width for larger screens */
+            margin: 0 auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: #f0f0f0;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+        .month-navigation button {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.875rem;
+            border: none;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        }
+        .month-navigation button:hover {
+            background-color: #cbd5e0;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            padding: 0.5rem;
+        }
+        .day-name {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #718096;
+            text-align: center;
+            padding-bottom: 0.25rem;
+        }
+        .day {
+            background-color: #ffffff;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: 1px solid #edf2f7;
+            min-height: 2rem; /* Ensure days have a minimum height */
+            display: flex; /* Use flexbox for vertical alignment */
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the start (top) */
+            overflow: hidden;  /*hide overflow of long assignment titles*/
+        }
+        .day:hover {
+            background-color: #f7fafc;
+        }
+        .day.today {
+            background-color: #fff5f5;
+            border: 1px solid #f56565;
+        }
+        .day.has-assignment {
+            background-color: #fff5eb;
+            border: 1px solid #f59e0b;
+        }
+        .assignment {
+            margin-top: 0.25rem;
+            background-color: #fef08a;
+            color: #1a202c;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-bottom: 0.125rem; /* Add a little margin at the bottom */
+        }
+
+         .assignment-details {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: none;  /* Initially hidden */
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .assignment-details h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .assignment-details p {
+            font-size: 0.875rem;
+            color: #4a5568;
+            margin-bottom: 0.75rem;
+        }
+
+        .assignment-details ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: #4a5568;
+        }
+
+        .assignment-details button {
+            background-color: #68d391;
+            color: #1a202c;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .assignment-details button:hover {
+            background-color: #48bb78;
+        }
+
+        @media (max-width: 768px) {  /* Medium screens and below */
+            .calendar {
+                max-width: 100%;  /* Take up full width on smaller screens */
+            }
+            .header {
+                padding: 1rem;
+            }
+            .calendar-grid {
+                gap: 0.25rem;  /* Adjust grid gap on smaller screens */
+            }
+            .day {
+                padding: 0.5rem;  /* Adjust day padding on smaller screens */
+                font-size: 0.875rem; /* Adjust font size for day numbers */
+                min-height: 2.5rem;
+            }
+            .day-name {
+                font-size: 0.6rem;
+            }
+            .assignment {
+                font-size: 0.7rem;
+                padding: 0.1rem 0.2rem;
+            }
+             .month-navigation button{
+                font-size: 0.75rem;
+                padding: 0.3rem 0.7rem;
+            }
+            .assignment-details{
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px){ /*small screens*/
+            .calendar-grid{
+                gap: 0;
+            }
+            .day{
+                padding: 0.25rem;
+                font-size: 0.7rem;
+                min-height: 2rem;
+            }
+            .day-name{
+                font-size: 0.5rem;
+            }
+             .header {
+                padding: 0.75rem 0.5rem;
+            }
+             .month-navigation button{
+                font-size: 0.6rem;
+                padding: 0.2rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 py-10">
+    <div class="calendar bg-white rounded-md shadow-lg">
+        <div class="header">
+            <h2 class="month-name text-xl font-semibold text-gray-800">Month</h2>
+            <div class="month-navigation">
+                <button id="prev-month">❮</button>
+                <button id="next-month">❯</button>
+            </div>
+        </div>
+        <div class="calendar-grid">
+            <div class="day-name">Sun</div>
+            <div class="day-name">Mon</div>
+            <div class="day-name">Tue</div>
+            <div class="day-name">Wed</div>
+            <div class="day-name">Thu</div>
+            <div class="day-name">Fri</div>
+            <div class="day-name">Sat</div>
+            </div>
+    </div>
+
+    <div class="assignment-details" id="assignment-details">
+        <h2>Assignment Title</h2>
+        <p><strong>Description:</strong> <span id="assignment-description"></span></p>
+        <p><strong>Due Date:</strong> <span id="assignment-due-date"></span></p>
+        <p><strong>Type:</strong> <span id="assignment-type"></span></p>
+        <p><strong>Course:</strong> <span id="assignment-course"></span></p>
+        <ul>
+            <li><strong>Submission Files:</strong> <span id="submission-files"></span></li>
+        </ul>
+        <button id="close-assignment-details">Close</button>
+    </div>
+
+    <script>
+        const calendarGrid = document.querySelector('.calendar-grid');
+        const monthName = document.querySelector('.month-name');
+        const prevMonthBtn = document.getElementById('prev-month');
+        const nextMonthBtn = document.getElementById('next-month');
+        const assignmentDetailsModal = document.getElementById('assignment-details');
+        const closeAssignmentDetailsBtn = document.getElementById('close-assignment-details');
+
+        const assignmentTitleElement = document.getElementById('assignment-details').querySelector('h2');
+        const assignmentDescriptionElement = document.getElementById('assignment-description');
+        const assignmentDueDateElement = document.getElementById('assignment-due-date');
+        const assignmentTypeElement = document.getElementById('assignment-type');
+        const assignmentCourseElement = document.getElementById('assignment-course');
+        const submissionFilesElement = document.getElementById('submission-files');
+
+        let currentDate = new Date();
+        let selectedDate = null; // Track the selected date
+
+         // Sample data (Replace with actual data, and include course)
+        const assignments = [
+            {
+                title: "Web Development Assignment 1",
+                description: "Create a basic HTML page.",
+                dueDate: "2024-03-10",
+                type: "individual",
+                course: "Web Development Fundamentals",
+                studentName: "Alice",
+                files: ["index.html", "style.css"]
+            },
+            {
+                title: "Data Science Assignment 2",
+                description: "Analyze the given dataset.",
+                dueDate: "2024-03-15",
+                type: "group",
+                course: "Data Science Essentials",
+                studentName: "Alice",
+                files: ["data.csv", "report.pdf"]
+            },
+            {
+                title: "Mobile App Assignment 1",
+                description: "Design a UI for a mobile app.",
+                dueDate: "2024-03-29",
+                type: "individual",
+                course: "Mobile App Development",
+                studentName: "Alice",
+                files: ["design.pdf"]
+            },
+            {
+                title: "Full Stack Assignment 3",
+                description: "Build a full stack app.",
+                dueDate: "2024-04-05",
+                type: "group",
+                course: "Full Stack Development",
+                studentName: "Alice",
+                files: ["app.zip"]
+            },
+            {
+                title: "Midterm Exam",
+                description: "Midterm exam for Web Development Fundamentals",
+                dueDate: "2024-04-12",
+                type: "exam",
+                course: "Web Development Fundamentals",
+                studentName: "Alice",
+                files: []
+            },
+             {
+                title: "Presentation",
+                description: "Present your findings on data analysis",
+                dueDate: "2024-04-18",
+                type: "group",
+                course: "Data Science Essentials",
+                studentName: "Alice",
+                files: ["presentation.pptx"]
+            }
+        ];
+
+        function generateCalendar(year, month) {
+            calendarGrid.innerHTML = `<div class="day-name">Sun</div>
+                                    <div class="day-name">Mon</div>
+                                    <div class="day-name">Tue</div>
+                                    <div class="day-name">Wed</div>
+                                    <div class="day-name">Thu</div>
+                                    <div class="day-name">Fri</div>
+                                    <div class="day-name">Sat</div>`;
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            monthName.textContent = new Date(year, month, 1).toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            for (let i = 0; i < firstDay; i++) {
+                calendarGrid.innerHTML += `<div class="day"></div>`;
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dayAssignments = assignments.filter(a => a.dueDate === fullDate && a.studentName === "Alice"); // Filter by due date and student
+
+                let dayContent = `<div class="day ${isToday(year, month, day) ? 'today' : ''}" data-date="${fullDate}">
+                                    <span class="day-number">${day}</span>`;
+                if (dayAssignments.length > 0) {
+                    dayContent += `<div class="has-assignment">`;
+                    dayAssignments.forEach(assignment => {
+                        dayContent += `<div class="assignment" data-assignment-title="${assignment.title}">${assignment.title}</div>`;
+                    });
+                    dayContent += `</div>`;
+                }
+                dayContent += `</div>`;
+                calendarGrid.innerHTML += dayContent;
+            }
+
+            // Add event listeners to the generated days and assignments
+            const dayElements = document.querySelectorAll('.day');
+            dayElements.forEach(dayElement => {
+                dayElement.addEventListener('click', () => showAssignmentsForDay(dayElement.dataset.date));
+            });
+
+            const assignmentElements = document.querySelectorAll('.assignment');
+            assignmentElements.forEach(assignmentElement => {
+                assignmentElement.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent day click from triggering
+                    showAssignmentDetails(assignmentElement.dataset.assignmentTitle);
+                });
+            });
+        }
+
+        function isToday(year, month, day) {
+            const today = new Date();
+            return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+        }
+
+        function showAssignmentsForDay(date) {
+            selectedDate = date; // Store the selected date
+            const dayElements = document.querySelectorAll('.day');
+             dayElements.forEach(dayElement => {
+                dayElement.classList.remove('selected');
+            });
+            const dayElement = document.querySelector(`[data-date="${date}"]`);
+            if(dayElement){
+                 dayElement.classList.add('selected');
+            }
+
+            const dayAssignments = assignments.filter(a => a.dueDate === date && a.studentName === "Alice"); // Filter by due date and studentName
+
+            if (dayAssignments.length > 0) {
+                 let detailsHTML = `<div class="bg-white rounded-md shadow-lg p-4 mt-4">
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Assignments for ${date}</h3>
+                                    <ul class="space-y-2">`;
+                    dayAssignments.forEach(assignment => {
+                        detailsHTML += `<li class="bg-gray-50 rounded-md py-2 px-3 flex justify-between items-center cursor-pointer hover:bg-gray-100"
+                                            data-assignment-title="${assignment.title}">
+                                            <span class="text-blue-700 font-medium">${assignment.title}</span>
+                                            <span class="text-gray-600 text-sm">${assignment.type}</span>
+                                        </li>`;
+                    });
+                    detailsHTML += `</ul></div>`;
+                //calendarGrid.innerHTML += detailsHTML; //append
+                const dayElement = document.querySelector(`[data-date="${date}"]`);
+                if(dayElement){
+                     dayElement.insertAdjacentHTML('beforeend', detailsHTML);
+                }
+
+                // Attach event listeners to the new list items.
+                const assignmentItems = document.querySelectorAll(`[data-assignment-title]`);
+                assignmentItems.forEach(item => {
+                    item.addEventListener('click', (event) => {
+                         event.stopPropagation();
+                        showAssignmentDetails(item.dataset.assignmentTitle);
+                    });
+                });
+
+            }else{
+                // Clear any previously displayed details
+                const existingDetails = document.querySelector(`[data-date="${date}"] + .bg-white`);
+                if (existingDetails) {
+                    existingDetails.remove();
+                }
+            }
+        }
+
+        function showAssignmentDetails(assignmentTitle) {
+            const assignment = assignments.find(a => a.title === assignmentTitle);
+            if (assignment) {
+                assignmentTitleElement.textContent = assignment.title;
+                assignmentDescriptionElement.textContent = assignment.description;
+                assignmentDueDateElement.textContent = assignment.dueDate;
+                assignmentTypeElement.textContent = assignment.type;
+                assignmentCourseElement.textContent = assignment.course;
+                submissionFilesElement.innerHTML = assignment.files.length > 0
+                    ? assignment.files.map(file => `<span>${file}</span>`).join(', ')
+                    : 'No files submitted';
+                assignmentDetailsModal.style.display = 'block';
+            }
+        }
+
+        closeAssignmentDetailsBtn.addEventListener('click', () => {
+            assignmentDetailsModal.style.display = 'none';
+        });
+
+        prevMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        });
+
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    </script>
+</body>
+</html>

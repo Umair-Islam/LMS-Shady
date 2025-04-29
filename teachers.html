@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher's Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-green-600 text-white py-4 flex justify-between items-center shadow-md sticky top-0 z-10 rounded-md">
+        <div class="logo text-xl font-bold ml-4">LMS Teacher</div>
+        <nav class="mr-4">
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="hover:text-green-200 no-underline">Home</a></li>
+                <li><a href="dashboard.html" class="hover:text-green-200 no-underline">Dashboard</a></li>
+                <li><a href="assignments.html" class="hover:text-green-200 no-underline">Assignments</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="teacher" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-6 text-green-700 text-center rounded-md">My Courses and Students</h2>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-4 text-blue-600">Course Overview</h3>
+                <ul id="teacher-courses" class="space-y-4">
+                    </ul>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="student-list-section" style="display: none;">
+                <h3 class="text-lg font-semibold mb-4 text-blue-600">Students in <span id="selected-course-name"></span></h3>
+                <ul id="student-list" class="space-y-4">
+                    </ul>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="assignment-section" style="display: none;">
+                <h3 class="text-lg font-semibold mb-4 text-blue-600">Manage Assignments for <span id="assignment-course-name"></span></h3>
+
+                <div class="mb-6">
+                    <h4 class="text-md font-semibold mb-2 text-gray-700">Add New Assignment</h4>
+                    <form id="add-assignment-form" class="space-y-4">
+                        <div>
+                            <label for="assignment-title" class="block text-gray-700 text-sm font-bold mb-2">Assignment Title:</label>
+                            <input type="text" id="assignment-title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <div id="assignment-title-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                        </div>
+                        <div>
+                            <label for="assignment-description" class="block text-gray-700 text-sm font-bold mb-2">Assignment Description:</label>
+                            <textarea id="assignment-description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                            <div id="assignment-description-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                        </div>
+                        <div>
+                            <label for="assignment-due-date" class="block text-gray-700 text-sm font-bold mb-2">Due Date:</label>
+                            <input type="date" id="assignment-due-date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                             <div id="assignment-due-date-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                        </div>
+                        <div>
+                            <label for="assignment-type" class="block text-gray-700 text-sm font-bold mb-2">Assignment Type:</label>
+                            <select id="assignment-type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option value="individual">Individual</option>
+                                <option value="group">Group</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">Add Assignment</button>
+                    </form>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="text-md font-semibold mb-2 text-gray-700">Existing Assignments</h4>
+                    <ul id="existing-assignments" class="space-y-4">
+                        </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-md font-semibold mb-2 text-gray-700">Student Submissions and Grades</h4>
+                    <ul id="student-submissions" class="space-y-4">
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-4 text-center rounded-md">
+        <p>© 2024 Learning Management System. All rights reserved.</p>
+    </footer>
+
+    <script>
+       const teacherCoursesList = document.getElementById('teacher-courses');
+        const studentListSection = document.getElementById('student-list-section');
+        const studentList = document.getElementById('student-list');
+        const selectedCourseNameElement = document.getElementById('selected-course-name');
+
+        const assignmentSection = document.getElementById('assignment-section');
+        const assignmentCourseNameElement = document.getElementById('assignment-course-name');
+        const addAssignmentForm = document.getElementById('add-assignment-form');
+        const assignmentTitleInput = document.getElementById('assignment-title');
+        const assignmentDescriptionInput = document.getElementById('assignment-description');
+        const assignmentDueDateInput = document.getElementById('assignment-due-date');
+        const assignmentTypeSelect = document.getElementById('assignment-type');
+        const assignmentTitleError = document.getElementById('assignment-title-error');
+        const assignmentDescriptionError = document.getElementById('assignment-description-error');
+        const assignmentDueDateError = document.getElementById('assignment-due-date-error');
+
+
+        const existingAssignmentsList = document.getElementById('existing-assignments');
+        const studentSubmissionsList = document.getElementById('student-submissions');
+
+        // Sample data (replace with actual data from your database)
+        const courses = [
+            { name: "Web Development Fundamentals", teacher: "Mr. Smith" },
+            { name: "Data Science Essentials", teacher: "Ms. Johnson" },
+            { name: "Mobile App Development", teacher: "Mr. Smith" },
+            { name: "Full Stack Development", teacher: "Ms. Johnson" }
+        ];
+
+        const students = [
+            { id: "1", name: "Alice", courses: ["Web Development Fundamentals", "Mobile App Development"] },
+            { id: "2", name: "Bob", courses: ["Web Development Fundamentals", "Data Science Essentials"] },
+            { id: "3", name: "Charlie", courses: ["Data Science Essentials", "Full Stack Development"] },
+            { id: "4", name: "David", courses: ["Mobile App Development", "Full Stack Development"] }
+        ];
+
+        let assignments = [
+          {
+            course: "Web Development Fundamentals",
+            title: "HTML Basics",
+            description: "Create a basic HTML page",
+            dueDate: "2024-03-20",
+            type: "individual",
+            submissions: [
+              { studentId: "1", files: ["file1.html"], grade: null },
+              { studentId: "2", files: ["index.html", "style.css"], grade: null },
+            ],
+          },
+          {
+            course: "Data Science Essentials",
+            title: "Data Analysis with Pandas",
+            description: "Analyze the dataset using Pandas",
+            dueDate: "2024-03-25",
+            type: "group",
+            submissions: [
+              { studentId: "2", files: ["data.csv", "analysis.ipynb"], grade: null },
+              { studentId: "3", files: ["data.csv", "report.pdf"], grade: null },
+            ],
+          },
+        ];
+
+        let currentCourse = null; // Track the currently selected course
+
+        function displayTeacherCourses() {
+            teacherCoursesList.innerHTML = '';
+            // In a real application, you would fetch the teacher's courses from the database
+            //  based on the logged-in teacher.  For this example, we'll assume Mr. Smith is logged in.
+            const teacherName = "Mr. Smith";
+            const coursesTaught = courses.filter(course => course.teacher === teacherName);
+
+            coursesTaught.forEach(course => {
+                const studentCount = students.filter(student => student.courses.includes(course.name)).length;
+                const listItem = document.createElement('li');
+                listItem.className = "bg-white rounded-md shadow-sm py-2 px-3 flex justify-between items-center cursor-pointer hover:bg-gray-50";
+                listItem.innerHTML = `<div class="font-semibold text-blue-700">${course.name}</div>
+                                      <div class="text-gray-600">${studentCount} Students</div>`;
+                listItem.addEventListener('click', () => showCourseDetails(course.name));
+                teacherCoursesList.appendChild(listItem);
+            });
+        }
+
+        function showCourseDetails(courseName) {
+            currentCourse = courseName;
+            studentListSection.style.display = "block";
+            assignmentSection.style.display = "block";
+            selectedCourseNameElement.textContent = courseName;
+            assignmentCourseNameElement.textContent = courseName;
+            displayStudentsInCourse(courseName);
+            displayExistingAssignments(courseName);
+            displayStudentSubmissions(courseName);
+        }
+
+        function displayStudentsInCourse(courseName) {
+            studentList.innerHTML = '';
+            const studentsInCourse = students.filter(student => student.courses.includes(courseName));
+            studentsInCourse.forEach(student => {
+                const listItem = document.createElement('li');
+                listItem.className = "bg-gray-50 rounded-md shadow-sm py-2 px-3";
+                listItem.textContent = `${student.name} (ID: ${student.id})`;
+                studentList.appendChild(listItem);
+            });
+        }
+
+        function displayExistingAssignments(courseName) {
+            existingAssignmentsList.innerHTML = '';
+            const courseAssignments = assignments.filter(assignment => assignment.course === courseName);
+            courseAssignments.forEach(assignment => {
+                const listItem = document.createElement('li');
+                listItem.className = "bg-white rounded-md shadow-sm py-2 px-3 flex justify-between items-start";
+                listItem.innerHTML = `<div class="space-y-2">
+                                        <div class="font-semibold text-blue-700">${assignment.title}</div>
+                                        <div class="text-gray-600 text-sm">${assignment.description}</div>
+                                        <div class="text-gray-500 text-xs">Due: ${assignment.dueDate}, Type: ${assignment.type}</div>
+                                      </div>
+                                      <button class="bg-red-500 text-white py-1 px-2 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 text-xs mt-2" onclick="deleteAssignment('${assignment.title}')">Delete</button>`;
+                existingAssignmentsList.appendChild(listItem);
+            });
+        }
+
+         function deleteAssignment(assignmentTitle) {
+            assignments = assignments.filter(assignment => assignment.title !== assignmentTitle);
+            displayExistingAssignments(currentCourse);
+            displayStudentSubmissions(currentCourse); // Update submissions display after deletion
+        }
+
+        function displayStudentSubmissions(courseName) {
+            studentSubmissionsList.innerHTML = '';
+             const courseAssignments = assignments.filter(assignment => assignment.course === courseName);
+
+            if (courseAssignments.length === 0) {
+                studentSubmissionsList.innerHTML = '<li class="text-gray-500 py-2">No assignments found for this course.</li>';
+                return;
+            }
+
+            courseAssignments.forEach(assignment => {
+                const assignmentTitle = assignment.title;
+                const submissions = assignment.submissions;
+
+                const assignmentHeader = document.createElement('li');
+                assignmentHeader.className = "bg-gray-100 rounded-md shadow-sm py-2 px-3 font-semibold text-blue-600";
+                assignmentHeader.textContent = `Submissions for ${assignmentTitle}:`;
+                studentSubmissionsList.appendChild(assignmentHeader);
+
+                if (submissions.length === 0) {
+                    const noSubmissionsItem = document.createElement('li');
+                    noSubmissionsItem.className = "text-gray-500 py-2 ml-4";
+                    noSubmissionsItem.textContent = "No submissions yet.";
+                    studentSubmissionsList.appendChild(noSubmissionsItem);
+                } else {
+                    submissions.forEach(submission => {
+                        const listItem = document.createElement('li');
+                        listItem.className = "bg-white rounded-md shadow-sm py-2 px-3 flex justify-between items-center ml-4";
+                        listItem.innerHTML = `<div>
+                                                <div class="font-semibold text-gray-700">Student ID: ${submission.studentId}</div>
+                                                <div class="text-gray-600 text-sm">Files: ${submission.files.join(', ')}</div>
+                                              </div>
+                                              <div class="flex items-center space-x-4">
+                                                <input type="number" class="w-20 border rounded py-1 px-2 text-gray-700" placeholder="Grade" id="grade-${assignmentTitle}-${submission.studentId}" value="${submission.grade === null ? '' : submission.grade}">
+                                                <button class="bg-green-500 text-white py-1 px-2 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 text-xs" onclick="gradeSubmission('${assignmentTitle}', '${submission.studentId}')">Grade</button>
+                                              </div>`;
+                        studentSubmissionsList.appendChild(listItem);
+                    });
+                }
+            });
+        }
+
+        function gradeSubmission(assignmentTitle, studentId) {
+            const gradeInput = document.getElementById(`grade-${assignmentTitle}-${studentId}`);
+            const grade = gradeInput.value.trim();
+
+            if (grade === "") {
+                alert("Please enter a grade.");
+                return;
+            }
+
+            const parsedGrade = parseInt(grade);
+            if (isNaN(parsedGrade) || parsedGrade < 0 || parsedGrade > 100) {
+                alert("Invalid grade. Please enter a number between 0 and 100.");
+                return;
+            }
+
+             const assignment = assignments.find(a => a.course === currentCourse && a.title === assignmentTitle);
+                if (assignment) {
+                    const submission = assignment.submissions.find(s => s.studentId === studentId);
+                    if (submission) {
+                        submission.grade = parsedGrade;
+                        displayStudentSubmissions(currentCourse); // Re-render to show updated grade
+                    }
+                }
+        }
+
+        addAssignmentForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            let isValid = true;
+
+            if (!assignmentTitleInput.value.trim()) {
+                assignmentTitleError.textContent = "Assignment title is required";
+                assignmentTitleError.style.display = "block";
+                isValid = false;
+            } else {
+                assignmentTitleError.style.display = "none";
+            }
+
+            if (!assignmentDescriptionInput.value.trim()) {
+                assignmentDescriptionError.textContent = "Assignment description is required";
+                assignmentDescriptionError.style.display = "block";
+                isValid = false;
+            } else {
+                assignmentDescriptionError.style.display = "none";
+            }
+
+            if (!assignmentDueDateInput.value) {
+                assignmentDueDateError.textContent = "Due date is required";
+                assignmentDueDateError.style.display = "block";
+                isValid = false;
+            } else {
+                assignmentDueDateError.style.display = "none";
+            }
+
+
+            if (isValid) {
+                const newAssignment = {
+                    course: currentCourse,
+                    title: assignmentTitleInput.value,
+                    description: assignmentDescriptionInput.value,
+                    dueDate: assignmentDueDateInput.value,
+                    type: assignmentTypeSelect.value,
+                    submissions: [] // Initialize with empty submissions
+                };
+                assignments.push(newAssignment);
+                displayExistingAssignments(currentCourse);
+                displayStudentSubmissions(currentCourse); //update the student submissions to show the newly added assignment.
+                addAssignmentForm.reset();
+            }
+        });
+
+        displayTeacherCourses();
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+        }
+        .login-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .label {
+            display: block;
+            font-size: 0.875rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        .input-box {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+        .input-box:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.16);
+        }
+        .login-button {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            background-color: #4299e1;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .login-button:hover {
+            background-color: #2b6cb0;
+        }
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="login-container">
+        <h2 class="login-title">Student Login</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="student-id" class="label">Student ID</label>
+                <input type="text" id="student-id" class="input-box" placeholder="Enter your Student ID">
+                <div id="id-error" class="error-message">Please enter your Student ID</div>
+            </div>
+            <div class="input-group">
+                <label for="password" class="label">Password</label>
+                <input type="password" id="password" class="input-box" placeholder="Enter your Password">
+                <div id="password-error" class="error-message">Please enter your Password</div>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+            <div id="login-error" class="error-message">Invalid credentials. Please try again.</div>
+        </form>
+    </div>
+
+    <script>
+       const loginForm = document.getElementById('login-form');
+        const studentIdInput = document.getElementById('student-id');
+        const passwordInput = document.getElementById('password');
+        const idError = document.getElementById('id-error');
+        const passwordError = document.getElementById('password-error');
+        const loginError = document.getElementById('login-error');
+
+        // Simulated student data (replace with actual data from your database)
+        const students = [
+            { id: "12345", password: "password123", name: "Alice", role: "student" },
+            { id: "67890", password: "securepass", name: "Bob", role: "student" },
+            { id: "teacher1", password: "teacherpass", name: "Mr. Smith", role: "teacher" },
+            { id: "admin1", password: "adminpass", name: "Admin", role: "admin" }
+        ];
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            let isIdValid = true;
+            let isPasswordValid = true;
+            let isLoginValid = true;
+
+            if (!studentIdInput.value.trim()) {
+                idError.style.display = "block";
+                isIdValid = false;
+            } else {
+                idError.style.display = "none";
+            }
+
+            if (!passwordInput.value.trim()) {
+                passwordError.style.display = "block";
+                isPasswordValid = false;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            if (isIdValid && isPasswordValid) {
+                const enteredId = studentIdInput.value.trim();
+                const enteredPassword = passwordInput.value.trim();
+
+                const user = students.find(student => student.id === enteredId && student.password === enteredPassword);
+
+                if (user) {
+                    loginError.style.display = "none";
+                    // Redirect based on user role
+                    if (user.role === "student") {
+                        window.location.href = "dashboard.html"; // Redirect to student dashboard
+                    } else if (user.role === "teacher") {
+                        window.location.href = "teachers.html"; // Redirect to teacher page
+                    }
+                     else if (user.role === "admin") {
+                        window.location.href = "admin.html"; // Redirect to admin page
+                    }
+                    else {
+                         window.location.href = "index.html";
+                    }
+                } else {
+                    loginError.style.display = "block";
+                    isLoginValid = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

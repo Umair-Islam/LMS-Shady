@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Assignments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-600 text-white py-4 flex justify-between items-center shadow-md sticky top-0 z-10 rounded-md">
+        <div class="logo text-xl font-bold ml-4">LMS</div>
+        <nav class="mr-4">
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="hover:text-blue-200 no-underline">Home</a></li>
+                <li><a href="dashboard.html" class="hover:text-blue-200 no-underline">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="assignments" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-6 text-blue-700 text-center rounded-md">My Assignments</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <ul id="assignment-list" class="space-y-4">
+                    </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-4 text-center rounded-md">
+        <p>© 2024 Learning Management System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const assignmentList = document.getElementById('assignment-list');
+
+        const assignments = [
+            {
+                title: "Web Development Assignment 1",
+                description: "Create a basic HTML page.",
+                dueDate: "2024-03-15",
+                status: "Pending"
+            },
+            {
+                title: "Data Science Assignment 2",
+                description: "Analyze the given dataset.",
+                dueDate: "2024-03-22",
+                status: "In Progress"
+            },
+            {
+                title: "Mobile App Assignment 1",
+                description: "Design a UI for a mobile app.",
+                dueDate: "2024-03-29",
+                status: "Completed"
+            },
+             {
+                title: "Full Stack Assignment 3",
+                description: "Build a full stack app.",
+                dueDate: "2024-04-05",
+                status: "Pending"
+            }
+        ];
+
+        function displayAssignments() {
+            assignmentList.innerHTML = '';
+            assignments.forEach(assignment => {
+                const listItem = document.createElement('li');
+                listItem.className = "bg-gray-50 rounded-md shadow-sm py-3 px-4 flex justify-between items-center";
+                listItem.innerHTML = `<div class="space-y-2">
+                                        <div class="font-semibold text-blue-700">${assignment.title}</div>
+                                        <div class="text-gray-600 text-sm">${assignment.description}</div>
+                                        <div class="text-gray-500 text-xs">Due: ${assignment.dueDate}</div>
+                                      </div>
+                                      <div class="font-semibold ${getStatusColor(assignment.status)}">${assignment.status}</div>`;
+                assignmentList.appendChild(listItem);
+            });
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case "Pending": return "text-red-500";
+                case "In Progress": return "text-yellow-500";
+                case "Completed": return "text-green-500";
+                default: return "text-gray-500";
+            }
+        }
+
+        displayAssignments();
+    </script>
+</body>
+</html>
