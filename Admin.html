@@ -19,226 +19,24 @@
         <div class="logo text-xl font-bold ml-4">LMS Admin</div>
         <nav class="mr-4">
             <ul class="flex space-x-4">
-                <li><a href="index.html" class="hover:text-red-200 no-underline">Home</a></li>
                 <li><a href="dashboard.html" class="hover:text-red-200 no-underline">Dashboard</a></li>
-                <li><a href="assignments.html" class="hover:text-red-200 no-underline">Assignments</a></li>
-                <li><a href="teachers.html" class="hover:text-red-200 no-underline">Teachers</a></li>
+                <li><a href="manage-users.html" class="hover:text-red-200 no-underline">Manage Users</a></li>
+                <li><a href="manage-courses.html" class="hover:text-red-200 no-underline">Manage Courses</a></li>
+                <li><a href="logout.html" class="hover:text-red-200 no-underline">Logout</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="admin" class="py-20 px-4">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-2xl font-semibold mb-6 text-red-700 text-center rounded-md">Manage Courses and Students</h2>
+    <main class="container mx-auto mt-8 p-4 rounded-md">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">Welcome, Administrator!</h1>
+        </main>
 
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-                <h3 class="text-lg font-semibold mb-4 text-blue-600">Add New Course</h3>
-                <form id="add-course-form" class="space-y-4">
-                    <div>
-                        <label for="course-name" class="block text-gray-700 text-sm font-bold mb-2">Course Name:</label>
-                        <input type="text" id="course-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                        <div id="course-name-error" class="text-red-500 text-xs italic" style="display: none;"></div>
-                    </div>
-                    <div>
-                        <label for="course-description" class="block text-gray-700 text-sm font-bold mb-2">Course Description:</label>
-                        <textarea id="course-description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                        <div id="course-description-error" class="text-red-500 text-xs italic" style="display: none;"></div>
-                    </div>
-                    <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">Add Course</button>
-                </form>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-                <h3 class="text-lg font-semibold mb-4 text-blue-600">Add New Student</h3>
-                <form id="add-student-form" class="space-y-4">
-                    <div>
-                        <label for="student-name" class="block text-gray-700 text-sm font-bold mb-2">Student Name:</label>
-                        <input type="text" id="student-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                        <div id="student-name-error" class="text-red-500 text-xs italic" style="display: none;"></div>
-                    </div>
-                     <div>
-                        <label for="student-id" class="block text-gray-700 text-sm font-bold mb-2">Student ID:</label>
-                        <input type="text" id="student-id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                        <div id="student-id-error" class="text-red-500 text-xs italic" style="display: none;"></div>
-                    </div>
-                    <div>
-                        <label for="student-courses" class="block text-gray-700 text-sm font-bold mb-2">Courses:</label>
-                        <select id="student-courses" multiple class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            </select>
-                         <div id="student-courses-error" class="text-red-500 text-xs italic" style="display: none;"></div>
-                    </div>
-                    <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">Add Student</button>
-                </form>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex space-x-8 mb-6">
-                    <div class="flex-1">
-                        <h3 class="text-lg font-semibold mb-4 text-blue-600">Course List</h3>
-                        <ul id="course-list" class="space-y-3">
-                            </ul>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="text-lg font-semibold mb-4 text-blue-600">Student List</h3>
-                        <ul id="student-list" class="space-y-3">
-                            </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-gray-800 text-white py-4 text-center rounded-md">
+    <footer class="bg-gray-800 text-white py-4 text-center rounded-md mt-8">
         <p>© 2024 Learning Management System. All rights reserved.</p>
     </footer>
 
     <script>
-        const courseList = document.getElementById('course-list');
-        const addCourseForm = document.getElementById('add-course-form');
-        const courseNameInput = document.getElementById('course-name');
-        const courseDescriptionInput = document.getElementById('course-description');
-        const courseNameError = document.getElementById('course-name-error');
-        const courseDescriptionError = document.getElementById('course-description-error');
-
-        const studentList = document.getElementById('student-list');
-        const addStudentForm = document.getElementById('add-student-form');
-        const studentNameInput = document.getElementById('student-name');
-        const studentIdInput = document.getElementById('student-id');
-        const studentCoursesSelect = document.getElementById('student-courses');
-        const studentNameError = document.getElementById('student-name-error');
-        const studentIdError = document.getElementById('student-id-error');
-        const studentCoursesError = document.getElementById('student-courses-error');
-
-        let courses = [
-            { name: "Web Development Fundamentals", description: "Learn HTML, CSS, and JavaScript" },
-            { name: "Data Science Essentials", description: "Master data analysis and machine learning" },
-            { name: "Mobile App Development", description: "Build mobile apps with React Native" },
-            { name: "Full Stack Development", description: "Learn both frontend and backend development" }
-        ];
-
-        let students = [];
-
-        function displayCourses() {
-            courseList.innerHTML = '';
-            studentCoursesSelect.innerHTML = ''; // Clear the dropdown
-            courses.forEach(course => {
-                const listItem = document.createElement('li');
-                listItem.className = "bg-gray-50 rounded-md shadow-sm py-2 px-3 flex justify-between items-center";
-                listItem.innerHTML = `<div class="font-semibold text-blue-700">${course.name}</div>
-                                      <div class="text-gray-600">${course.description}</div>
-                                      <button class="bg-red-500 text-white py-1 px-2 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 text-xs" onclick="deleteCourse('${course.name}')">Delete</button>`;
-                courseList.appendChild(listItem);
-
-                // Add course to the select dropdown
-                const option = document.createElement('option');
-                option.value = course.name;
-                option.textContent = course.name;
-                studentCoursesSelect.appendChild(option);
-            });
-        }
-
-        function deleteCourse(courseName) {
-            courses = courses.filter(course => course.name !== courseName);
-            displayCourses();
-        }
-
-        function displayStudents() {
-            studentList.innerHTML = '';
-            students.forEach(student => {
-                const listItem = document.createElement('li');
-                listItem.className = "bg-gray-50 rounded-md shadow-sm py-2 px-3 flex justify-between items-start";
-                listItem.innerHTML = `<div class="space-y-2">
-                                        <div class="font-semibold text-blue-700">Name: ${student.name}</div>
-                                        <div class="text-gray-600">ID: ${student.id}</div>
-                                        <div class="text-gray-600 text-sm">Courses: ${student.courses.join(', ')}</div>
-                                      </div>
-                                      <button class="bg-red-500 text-white py-1 px-2 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 text-xs mt-2" onclick="deleteStudent('${student.id}')">Delete</button>`;
-                studentList.appendChild(listItem);
-            });
-        }
-
-        function deleteStudent(studentId) {
-            students = students.filter(student => student.id !== studentId);
-            displayStudents();
-        }
-
-        addCourseForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            let isValid = true;
-
-            if (!courseNameInput.value.trim()) {
-                courseNameError.textContent = "Course name is required";
-                courseNameError.style.display = "block";
-                isValid = false;
-            } else {
-                courseNameError.style.display = "none";
-            }
-
-            if (!courseDescriptionInput.value.trim()) {
-                courseDescriptionError.textContent = "Course description is required";
-                courseDescriptionError.style.display = "block";
-                isValid = false;
-            } else {
-                courseDescriptionError.style.display = "none";
-            }
-
-            if (isValid) {
-                const newCourse = {
-                    name: courseNameInput.value,
-                    description: courseDescriptionInput.value
-                };
-                courses.push(newCourse);
-                displayCourses();
-                addCourseForm.reset();
-            }
-        });
-
-        addStudentForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            let isValid = true;
-
-            if (!studentNameInput.value.trim()) {
-                studentNameError.textContent = "Student name is required";
-                studentNameError.style.display = "block";
-                isValid = false;
-            } else {
-                studentNameError.style.display = "none";
-            }
-
-             if (!studentIdInput.value.trim()) {
-                studentIdError.textContent = "Student ID is required";
-                studentIdError.style.display = "block";
-                isValid = false;
-            } else {
-                studentIdError.style.display = "none";
-            }
-
-            if (studentCoursesSelect.selectedOptions.length === 0) {
-                studentCoursesError.textContent = "Please select at least one course";
-                studentCoursesError.style.display = "block";
-                isValid = false;
-            } else {
-                studentCoursesError.style.display = "none";
-            }
-
-
-            if (isValid) {
-                const selectedCourses = Array.from(studentCoursesSelect.selectedOptions).map(option => option.value);
-                const newStudent = {
-                    name: studentNameInput.value,
-                    id: studentIdInput.value,
-                    courses: selectedCourses
-                };
-                students.push(newStudent);
-                displayStudents();
-                addStudentForm.reset();
-            }
-        });
-
-        displayCourses();
-        displayStudents();
+        //  Your JavaScript will go here
     </script>
 </body>
 </html>
