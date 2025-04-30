@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-red-600 text-white py-4 flex justify-between items-center shadow-md sticky top-0 z-10 rounded-md">
+        <div class="logo text-xl font-bold ml-4">LMS Admin</div>
+        <nav class="mr-4">
+            <ul class="flex space-x-4">
+                <li><a href="dashboard.html" class="hover:text-red-200 no-underline">Dashboard</a></li>
+                <li><a href="manage-users.html" class="hover:text-red-200 no-underline">Manage Users</a></li>
+                <li><a href="manage-courses.html" class="hover:text-red-200 no-underline">Manage Courses</a></li>
+                <li><a href="logout.html" class="hover:text-red-200 no-underline">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto mt-8 p-4 rounded-md">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">Manage Users</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-md shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-blue-600">Add New Student</h3>
+                <form id="add-student-form" class="space-y-4">
+                    <div>
+                        <label for="student-name" class="block text-gray-700 text-sm font-bold mb-2">Student Name:</label>
+                        <input type="text" id="student-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="student-name-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <div>
+                        <label for="student-id" class="block text-gray-700 text-sm font-bold mb-2">Student ID:</label>
+                        <input type="text" id="student-id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="student-id-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <div>
+                        <label for="student-password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                        <input type="password" id="student-password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="student-password-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">Add Student</button>
+                </form>
+            </div>
+            <div class="bg-white rounded-md shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-blue-600">Add New Teacher</h3>
+                <form id="add-teacher-form" class="space-y-4">
+                    <div>
+                        <label for="teacher-name" class="block text-gray-700 text-sm font-bold mb-2">Teacher Name:</label>
+                        <input type="text" id="teacher-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="teacher-name-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <div>
+                        <label for="teacher-id" class="block text-gray-700 text-sm font-bold mb-2">Teacher ID:</label>
+                        <input type="text" id="teacher-id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="teacher-id-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <div>
+                        <label for="teacher-password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                        <input type="password" id="teacher-password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="teacher-password-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">Add Teacher</button>
+                </form>
+            </div>
+            <div class="bg-white rounded-md shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-blue-600">Add New Admin</h3>
+                <form id="add-admin-form" class="space-y-4">
+                    <div>
+                        <label for="admin-name" class="block text-gray-700 text-sm font-bold mb-2">Admin Name:</label>
+                        <input type="text" id="admin-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="admin-name-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <div>
+                        <label for="admin-id" class="block text-gray-700 text-sm font-bold mb-2">Admin ID:</label>
+                        <input type="text" id="admin-id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="admin-id-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <div>
+                        <label for="admin-password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                        <input type="password" id="admin-password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div id="admin-password-error" class="text-red-500 text-xs italic" style="display: none;"></div>
+                    </div>
+                    <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">Add Admin</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4 text-center rounded-md mt-8">
+        <p>© 2024 Learning Management System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Get the form elements
+        const addStudentForm = document.getElementById('add-student-form');
+        const addTeacherForm = document.getElementById('add-teacher-form');
+        const addAdminForm = document.getElementById('add-admin-form');
+
+        // Get the input elements for student form
+        const studentNameInput = document.getElementById('student-name');
+        const studentIdInput = document.getElementById('student-id');
+        const studentPasswordInput = document.getElementById('student-password');
+        const studentNameError = document.getElementById('student-name-error');
+        const studentIdError = document.getElementById('student-id-error');
+        const studentPasswordError = document.getElementById('student-password-error');
+
+        // Get the input elements for teacher form
+        const teacherNameInput = document.getElementById('teacher-name');
+        const teacherIdInput = document.getElementById('teacher-id');
+        const teacherPasswordInput = document.getElementById('teacher-password');
+        const teacherNameError = document.getElementById('teacher-name-error');
+        const teacherIdError = document.getElementById('teacher-id-error');
+        const teacherPasswordError = document.getElementById('teacher-password-error');
+
+        // Get the input elements for admin form
+        const adminNameInput = document.getElementById('admin-name');
+        const adminIdInput = document.getElementById('admin-id');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const adminNameError = document.getElementById('admin-name-error');
+        const adminIdError = document.getElementById('admin-id-error');
+        const adminPasswordError = document.getElementById('admin-password-error');
+
+        // Function to validate the student form
+        function validateStudentForm() {
+            let isValid = true;
+
+            if (!studentNameInput.value.trim()) {
+                studentNameError.textContent = "Student name is required";
+                studentNameError.style.display = "block";
+                isValid = false;
+            } else {
+                studentNameError.style.display = "none";
+            }
+
+            if (!studentIdInput.value.trim()) {
+                studentIdError.textContent = "Student ID is required";
+                studentIdError.style.display = "block";
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9]+$/.test(studentIdInput.value.trim())) {
+                studentIdError.textContent = "Student ID must be alphanumeric";
+                studentIdError.style.display = "block";
+                isValid = false;
+            } else {
+                studentIdError.style.display = "none";
+            }
+
+            if (!studentPasswordInput.value.trim()) {
+                studentPasswordError.textContent = "Password is required";
+                studentPasswordError.style.display = "block";
+                isValid = false;
+            } else if (studentPasswordInput.value.trim().length < 8) {
+                studentPasswordError.textContent = "Password must be at least 8 characters long";
+                studentPasswordError.style.display = "block";
+                isValid = false;
+            } else {
+                studentPasswordError.style.display = "none";
+            }
+
+            return isValid;
+        }
+
+        // Function to validate the teacher form
+        function validateTeacherForm() {
+            let isValid = true;
+
+            if (!teacherNameInput.value.trim()) {
+                teacherNameError.textContent = "Teacher name is required";
+                teacherNameError.style.display = "block";
+                isValid = false;
+            } else {
+                teacherNameError.style.display = "none";
+            }
+
+            if (!teacherIdInput.value.trim()) {
+                teacherIdError.textContent = "Teacher ID is required";
+                teacherIdError.style.display = "block";
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9]+$/.test(teacherIdInput.value.trim())) {
+                teacherIdError.textContent = "Teacher ID must be alphanumeric";
+                teacherIdError.style.display = "block";
+                isValid = false;
+            }  else {
+                teacherIdError.style.display = "none";
+            }
+
+            if (!teacherPasswordInput.value.trim()) {
+                teacherPasswordError.textContent = "Password is required";
+                teacherPasswordError.style.display = "block";
+                isValid = false;
+            } else if (teacherPasswordInput.value.trim().length < 8) {
+                teacherPasswordError.textContent = "Password must be at least 8 characters long";
+                teacherPasswordError.style.display = "block";
+                isValid = false;
+            } else {
+                teacherPasswordError.style.display = "none";
+            }
+
+            return isValid;
+        }
+
+        // Function to validate the admin form
+        function validateAdminForm() {
+            let isValid = true;
+
+            if (!adminNameInput.value.trim()) {
+                adminNameError.textContent = "Admin name is required";
+                adminNameError.style.display = "block";
+                isValid = false;
+            } else {
+                adminNameError.style.display = "none";
+            }
+
+            if (!adminIdInput.value.trim()) {
+                adminIdError.textContent = "Admin ID is required";
+                adminIdError.style.display = "block";
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9]+$/.test(adminIdInput.value.trim())) {
+                adminIdError.textContent = "Admin ID must be alphanumeric";
+                adminIdError.style.display = "block";
+                isValid = false;
+            } else {
+                adminIdError.style.display = "none";
+            }
+
+            if (!adminPasswordInput.value.trim()) {
+                adminPasswordError.textContent = "Password is required";
+                adminPasswordError.style.display = "block";
+                isValid = false;
+            } else if (adminPasswordInput.value.trim().length < 8) {
+                adminPasswordError.textContent = "Password must be at least 8 characters long";
+                adminPasswordError.style.display = "block";
+                isValid = false;
+            } else {
+                adminPasswordError.style.display = "none";
+            }
+
+            return isValid;
+        }
+
+        // Event listener for student form submission
+        addStudentForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            if (validateStudentForm()) {
+                // Add student logic here
+                console.log('Student added:', {
+                    name: studentNameInput.value,
+                    id: studentIdInput.value,
+                    password: studentPasswordInput.value,
+                });
+                alert('Student added successfully!'); // Replace with a better notification
+                addStudentForm.reset();
+            }
+        });
+
+        // Event listener for teacher form submission
+        addTeacherForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            if (validateTeacherForm()) {
+                // Add teacher logic here
+                console.log('Teacher added:', {
+                    name: teacherNameInput.value,
+                    id: teacherIdInput.value,
+                    password: teacherPasswordInput.value,
+                });
+                alert('Teacher added successfully!'); // Replace with a better notification
+                addTeacherForm.reset();
+            }
+        });
+
+        // Event listener for admin form submission
+        addAdminForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            if (validateAdminForm()) {
+                // Add admin logic here
+                console.log('Admin added:', {
+                    name: adminNameInput.value,
+                    id: adminIdInput.value,
+                    password: adminPasswordInput.value,
+                });
+                alert('Admin added successfully!'); // Replace with a better notification
+                addAdminForm.reset();
+            }
+        });
+    </script>
+</body>
+</html>
